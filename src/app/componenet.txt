@@ -1,0 +1,175 @@
+
+import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Data } from '@angular/router';
+
+import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { AppService } from './services/my.service';
+import { Observable, Subject, Subscription  } from 'rxjs';
+import { Organization } from './services/Organization';
+import { SearchCriteria } from './services/search-criteria';
+
+
+
+class DataTablesResponse {
+  data: any[];
+  draw: number;
+  recordsFiltered: number;
+  recordsTotal: number;
+}
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent implements OnInit{
+
+  dtOptions: DataTables.Settings = {};
+  Organization: Organization[];
+  searchCriteria: SearchCriteria = { isPageLoad: true, filter: "" };    
+  dtTrigger: Subject<any> = new Subject();
+  dtElement: DataTableDirective;
+  timerSubscription: Subscription;
+  userName: string;
+
+  constructor(
+    private http: HttpClient,
+    private appService: AppService,
+  ) { }
+  ngOnInit() {
+    debugger;
+    const that = this;
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      ajax: (dataTablesParameters: any, callback) => {
+        dataTablesParameters.searchCriteria = this.searchCriteria;
+
+        //that.http
+        //  .post<DataTablesResponse>(
+        //    'https://angular-datatables-demo-server.herokuapp.com/',
+        //  dataTablesParameters, {}
+        //)
+        
+        this.appService.getUserList(dataTablesParameters)
+       // this.appService.getAllOrgWithPaging(dataTablesParameters)
+          .subscribe(resp => {
+            var aa = JSON.parse(resp);
+        
+            that.Organization = aa.data;
+            console.log(that.Organization)
+            callback({
+              recordsTotal: aa.recordsTotal,
+              recordsFiltered: aa.recordsFiltered,
+              data: []
+            });
+          });
+      },
+      columns: [{ data: 'name' }, { data: 'realm' }, { data: 'acc' }]
+    };
+
+  
+    this.subscribeToData();
+  }
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+    //this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    //  dtInstance.on('draw.dt', function () {
+    //    if ($('.dataTables_empty').length > 0) {
+    //      $('.dataTables_empty').remove();
+    //    }
+    //  });
+
+    //});
+  }
+
+  rerender(): void {
+    this.searchCriteria.isPageLoad = false;
+  //  this.searchCriteria.filter = this.orgname;
+   
+
+
+    //this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    //  dtInstance.clear(); 
+    //  dtInstance.destroy();
+    //  this.dtTrigger.next();
+    //});
+  }
+  search() {
+    this.rerender();
+  }
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+  }
+  private refreshData(): void {
+    this.rerender();
+  //  this.subscribeToData();
+  }
+  private subscribeToData(): void {
+ //   this.refreshData();
+  }    
+
+  //onDelete(name) {
+  //  alert(name);
+  //}
+  //filterForUsers(filterVal: any) {
+  //  console.log("A");
+  //  //if (filterVal == "0")
+  //  //  this.forecasts = this.cacheForecasts;
+  //  //else
+  //  //  this.forecasts = this.cacheForecasts.filter((item) => item.summary == filterVal);
+  //}
+
+  //AddRole(rolename: string) {
+
+  //  console.log(rolename); if (rolename === "") {
+  //    setTimeout(() => {
+  //      //this.selectItem(this.selectedIndex);
+  //      //this.listHidden = true;
+  //      if (rolename === "") {
+  //        this.showError = true;
+  //      } else {
+  //        this.showError = false;
+  //      }
+  //    }, 500);
+  //  } else {
+  //    // helps to select item by clicking
+  //    this.showError = false;
+  //    this.userdata.push(rolename);
+
+  //  }
+  //}  
+
+  //ngAfterViewInit(): void {
+  //  //this.loadData();
+  //}
+
+  //private loadData(): void {
+  //  let self = this; 
+  //  this.appService.getOrgList().subscribe(data => this.data = JSON.parse(data));
+  // // this.appService.getOrgList().subscribe(data => console.log(JSON.parse(data)));
+
+  //}
+
+  //ngOnInit(): void {
+  //  //this.loadData();
+  //  this.dtOptions = {
+  //    pagingType: 'full_numbers',
+  //    pageLength: 10,
+  //    processing: true
+  //  };
+
+
+
+
+
+  //}
+}

@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-sm-6" style="padding:15px 13px 11px">
+
+
+
+    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Realm</th>
+          <th>Acc</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="Organizations?.length != 0">
+        <tr *ngFor="let group  of Organizations" (click)="onSelect(group.id)" [ngClass]="{'selected' : group.id == selectedName}">
+          <td>{{group.id}}</td>
+          <td>{{group.name}}</td>
+          <td>{{group.realm}}</td>
+          <td>{{group.acc}}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="Organizations?.length == 0">
+        <tr>
+          <td colspan="3" class="no-data-available">No data!</td>
+        </tr>
+      <tbody>
+    </table>
+  </div>
+
+
+  <div class="col-sm-6" style="padding:15px 13px 11px">
+
+    <app-user [list]="UserList"></app-user>
+    <div>
+      <label>Summary: </label>
+
+    </div>
+
+    <div class="col-sm-6" style="padding:15px 13px 11px">
+     
+
+      <ul class="list-group">
+        <li *ngFor="let role of roleList" class="list-group-item d-flex justify-content-between align-items-center">
+          {{role.RoleName}}
+          <span class="badge badge-primary badge-pill" (click)="onDelete(role.RoleId)">delete</span>
+        </li>
+
+      </ul>
+
+      <input type="text" [(ngModel)]="roleValue" class="combobox-input" placeholder="Add Role" [ngClass]="{'error': showError}">
+      <span *ngIf="showError" class="error-text"><i>Please enter role name.</i></span>
+      <input type="button" title="Add Role" (click)="AddRole(roleValue)" value="Add Role">
+
+    </div>
+  </div>
+</div>
+
+
+
+
