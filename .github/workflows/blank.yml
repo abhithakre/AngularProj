@@ -2,6 +2,7 @@ name: "Assign Reviewers"
 on:  
   pull_request:
     types: [opened, ready_for_review]
+    branches: [master]
      
 jobs:
   assign-reviewers:
