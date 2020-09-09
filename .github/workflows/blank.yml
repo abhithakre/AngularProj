@@ -16,6 +16,7 @@ jobs:
   add-reviews:
     runs-on: ubuntu-latest
     steps:
+      - name: add reviewers & assign author
       - uses: kentaro-m/auto-assign-action@v1.0.0
         with:
           repo-token: "${{ secrets.MYGITHUB_TOKEN }}"
