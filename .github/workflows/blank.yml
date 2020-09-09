@@ -1,29 +1,11 @@
-name: PR Management
-
-on:
-  pull_request:
-    types:
-      - opened
-      - ready_for_review
+name: AutoAssigner
+on: [pull_request]
 
 jobs:
-  ready-for-review:
-    name: PR Ready For Review
-    if: github.event.action == 'ready_for_review' || (github.event.action == 'opened' && github.event.pull_request.draft == false)
+  assignAuthor:
     runs-on: ubuntu-latest
     steps:
-      - name: add reviewers & assign author
-        # https://github.com/kentaro-m/auto-assign-action
-        uses: kentaro-m/auto-assign-action@v1.1.0
+      - uses: samspills/assign-pr-to-author@v1.0
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
         with:
-          repo-token: ${{ secrets.MYGITHUB_TOKEN }}
-  opened:
-    name: PR Opened
-    if: github.event.action == 'opened'
-    runs-on: ubuntu-latest
-    steps:
-      - name: label based on branch prefix
-        # https://github.com/TimonVS/pr-labeler-action
-        uses: TimonVS/pr-labeler@v3.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.MYGITHUB_TOKEN }}
+          repo-token: '${{ secrets.MYGITHUB_TOKEN }}'
