@@ -4,12 +4,12 @@
 addReviewers: true
 
 # Set to author to set pr creater as assignee
-addAssignees: author
+addAssignees: false
 
 # A list of reviewers to be added to pull requests (GitHub user name)
 reviewers:
   - ITProKyle
-  - abhithakre
+
 
 # A number of reviewers added to the pull request
 # Set 0 to add all the reviewers (default: 0)
