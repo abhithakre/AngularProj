@@ -1,15 +1,12 @@
-name: PR Management
-
+name: 'Auto Assign'
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - master
-    types:
-      - opened
-      - ready_for_review
   push:
     branches:
       - master
+   
 
 jobs:
   ready-for-review:
@@ -22,13 +19,3 @@ jobs:
         uses: kentaro-m/auto-assign-action@v1.1.0
         with:
           repo-token: ${{ secrets.MYGITHUB_TOKEN }}
-  opened:
-    name: PR Opened
-    if: github.event.action == 'opened'
-    runs-on: ubuntu-latest
-    steps:
-      - name: label based on branch prefix
-        # https://github.com/TimonVS/pr-labeler-action
-        uses: TimonVS/pr-labeler@v3.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.MYGITHUB_TOKEN }}
