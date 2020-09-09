@@ -2,11 +2,11 @@ addReviewers: true
 addAssignees: true
 reviewers:
   - okgolove
-  - rfvermut
+  - abhithakre
 numberOfReviewers: 0
 assignees:
   - okgolove
-  - rfvermut
+  - abhithakre
 numberOfAssignees: 1
 
 
