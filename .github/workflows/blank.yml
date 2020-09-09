@@ -4,15 +4,11 @@ on:
     types: [opened, ready_for_review]
     branches: [master]
      
-jobs:
-  assign-reviewers:
+jobs: 
+  add-reviews:
     runs-on: ubuntu-latest
     steps:
-    - name: "Assign Team and Persons"
-      uses: rowi1de/auto-assign-review-teams@v1.0.1
-      with:
-        repo-token: ${{ secrets.MYGITHUB_TOKEN }}
-        teams: "gitub-org-team"         # only works for GitHub Organisation/Teams
-        persons: "rowi1de"              # add individual persons here 
-        include-draft: false            # Draft PRs will be skipped (default: false)
-        skip-with-manual-reviewers: 0   # Skip this action, if the number of reviwers was already assigned (default: 0)
+      - uses: kentaro-m/auto-assign-action@v1.1.1
+        with: 
+          configuration-path: ".github/auto_assign.yml"
+          repo-token: '${{ secrets.MYGITHUB_TOKEN }}'
