@@ -1,16 +1,11 @@
-name: 'Auto Assign'
-on:
-  pull_request_target:
-    branches:
-      - master
-  push:
-    branches:
-      - master
-   
+name: Auto-Assign-Reviewers
+
+on: pull_request
 
 jobs:
-  add-reviews:
+  add-reviewers:
     runs-on: ubuntu-latest
+
     steps:
     - name: Auto Assign Action
       uses: kentaro-m/auto-assign-action@v1.1.0
