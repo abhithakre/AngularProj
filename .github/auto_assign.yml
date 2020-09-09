@@ -1,10 +1,10 @@
 addReviewers: true
 addAssignees: true
 reviewers:
-    - abhithakre
+    - okgolove
 numberOfReviewers: 1
 assignees:
-    - abhithakre
+    - okgolove
 numberOfAssignees: 1
 
 
