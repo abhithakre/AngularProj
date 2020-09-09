@@ -2,9 +2,14 @@ name: PR Management
 
 on:
   pull_request:
+    branches:
+      - master
     types:
       - opened
       - ready_for_review
+  push:
+    branches:
+      - master
 
 jobs:
   ready-for-review:
